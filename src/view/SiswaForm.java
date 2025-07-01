@@ -334,25 +334,47 @@ public class SiswaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cbJenisKelaminActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            String sql = "UPDATE siswa SET nama_siswa=?, jenis_kelamin=?, tanggal_lahir=?, id_kelas=?, id_jurusan=? WHERE nis=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, txtNama.getText());
-            pst.setString(2, cbJenisKelamin.getSelectedItem().toString());
-            pst.setDate(3, java.sql.Date.valueOf(txtTanggalLahir.getText()));
-            pst.setInt(4, getIdKelas(cbKelas.getSelectedItem().toString()));
-            pst.setInt(5, getIdJurusan(cbJurusan.getSelectedItem().toString()));
-            pst.setString(6, txtNis.getText());
 
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Data berhasil diedit");
-            tampilDataSiswa();
-            resetForm();
+            try {
+        // Validasi tanggal
+        java.util.Date utilDate = txtTanggalLahir.getDate();
+        if (utilDate == null) {
+            JOptionPane.showMessageDialog(null, "Tanggal lahir belum dipilih!");
+            return;
+        }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Gagal edit data: " + e.getMessage());
-        }        // TODO add your handling code here:
+        Connection conn = DatabaseConnection.getConnection();
+        String sql = "UPDATE siswa SET nama_siswa=?, jenis_kelamin=?, tanggal_lahir=?, id_kelas=?, id_jurusan=? WHERE nis=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, txtNama.getText());
+
+        String jenis = cbJenisKelamin.getSelectedItem().toString();
+        pst.setString(2, jenis);
+
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        pst.setDate(3, sqlDate);
+
+        pst.setInt(4, getIdKelas(cbKelas.getSelectedItem().toString()));
+        pst.setInt(5, getIdJurusan(cbJurusan.getSelectedItem().toString()));
+
+        pst.setString(6, txtNis.getText());
+
+        int rows = pst.executeUpdate();
+
+        if (rows > 0) {
+            JOptionPane.showMessageDialog(null, "Data berhasil diupdate");
+        } else {
+            JOptionPane.showMessageDialog(null, "Data tidak ditemukan untuk diupdate");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Gagal update data: " + e.getMessage());
+    }
+
+    tampilDataSiswa();
+    resetForm();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -380,43 +402,59 @@ public class SiswaForm extends javax.swing.JFrame {
 
         pst.setString(1, txtNis.getText());
         pst.setString(2, txtNama.getText());
-        pst.setString(3, getKodeJenisKelamin());
+        pst.setString(3, cbJenisKelamin.getSelectedItem().toString());
 
         // ✅ Ambil tanggal dari JDateChooser
         java.util.Date utilDate = txtTanggalLahir.getDate();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        pst.setDate(4, sqlDate); // ✅ Gunakan ini saja
+        pst.setDate(4, sqlDate);
 
         pst.setInt(5, getIdKelas(cbKelas.getSelectedItem().toString()));
         pst.setInt(6, getIdJurusan(cbJurusan.getSelectedItem().toString()));
         pst.executeUpdate();
 
         JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan");
-        tampilDataSiswa();
-        resetForm();
+        
 
         } catch (Exception e) {
-            e.printStackTrace(); // detail error muncul di console
-            JOptionPane.showMessageDialog(null, "Gagal tambah data");
-        }       // TODO add your handling code here:
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(null, "Gagal tambah data: " + e.getMessage());
+        }       
+        tampilDataSiswa();
+        resetForm();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void tableSiswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSiswaMouseClicked
-        int row = tableSiswa.getSelectedRow();
-        txtNis.setText(tableSiswa.getValueAt(row, 0).toString());
-        txtNama.setText(tableSiswa.getValueAt(row, 1).toString());
-        cbJenisKelamin.setSelectedItem(tableSiswa.getValueAt(row, 2).toString());
-        txtTanggalLahir.setText(tableSiswa.getValueAt(row, 3).toString());
-        cbKelas.setSelectedItem(tableSiswa.getValueAt(row, 4).toString());
-        cbJurusan.setSelectedItem(tableSiswa.getValueAt(row, 5).toString());
-        txtNis.setEditable(false);
+
+        int baris = tableSiswa.getSelectedRow();
+        txtNis.setText(tableSiswa.getValueAt(baris, 0).toString());
+        txtNama.setText(tableSiswa.getValueAt(baris, 1).toString());
+        cbJenisKelamin.setSelectedItem(tableSiswa.getValueAt(baris,2).toString());
+
+        String jk = tableSiswa.getValueAt(baris, 3).toString();
+        if(jk.equals("L")){
+            cbJenisKelamin.setSelectedItem("Laki-laki");
+        } else {
+            cbJenisKelamin.setSelectedItem("Perempuan");
+        }
+
+        // Tanggal Lahir
+        try {
+            java.util.Date date = new SimpleDateFormat("yyyy-MM-dd").parse(tableSiswa.getValueAt(baris,3).toString());
+            txtTanggalLahir.setDate(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        cbKelas.setSelectedItem(tableSiswa.getValueAt(baris,5).toString());
+        cbJurusan.setSelectedItem(tableSiswa.getValueAt(baris,6).toString());
     }//GEN-LAST:event_tableSiswaMouseClicked
 
     private void resetForm() {
         txtNis.setText("");
         txtNama.setText("");
         cbJenisKelamin.setSelectedIndex(0);
-        txtTanggalLahir.setText("");
+        txtTanggalLahir.setDate(null);
         cbKelas.setSelectedIndex(0);
         cbJurusan.setSelectedIndex(0);
         txtNis.setEditable(true);
