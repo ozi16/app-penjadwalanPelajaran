@@ -260,6 +260,19 @@ public class SiswaForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Gagal isi jurusan: " + e.getMessage());
         }
     }
+    
+    private void setComboSelectedItem(javax.swing.JComboBox<String> combo, String value) {
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            String item = combo.getItemAt(i);
+            if (item.trim().equalsIgnoreCase(value.trim())) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+        // Jika tidak ketemu, tetap pilih index 0
+        combo.setSelectedIndex(0);
+    }
+
 
     private void tampilDataSiswa() {
         DefaultTableModel model = new DefaultTableModel();
@@ -446,8 +459,8 @@ public class SiswaForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        cbKelas.setSelectedItem(tableSiswa.getValueAt(baris,5).toString());
-        cbJurusan.setSelectedItem(tableSiswa.getValueAt(baris,6).toString());
+        setComboSelectedItem(cbKelas, tableSiswa.getValueAt(baris,4).toString());
+        setComboSelectedItem(cbJurusan, tableSiswa.getValueAt(baris,5).toString());
     }//GEN-LAST:event_tableSiswaMouseClicked
 
     private void resetForm() {

@@ -33,6 +33,9 @@ public class Dashboard extends javax.swing.JFrame {
         btnPelajaran = new javax.swing.JButton();
         btnJadwal = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
+        btnGuru = new javax.swing.JButton();
+        btnkelas = new javax.swing.JButton();
+        btnJurusan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,13 +49,44 @@ public class Dashboard extends javax.swing.JFrame {
         });
 
         btnPelajaran.setText("Data Pelajaran");
+        btnPelajaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPelajaranActionPerformed(evt);
+            }
+        });
 
-        btnJadwal.setText("Lihat Jadwal");
+        btnJadwal.setText("Atur Jadwal");
+        btnJadwal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJadwalActionPerformed(evt);
+            }
+        });
 
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogoutActionPerformed(evt);
+            }
+        });
+
+        btnGuru.setText("Data Guru");
+        btnGuru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuruActionPerformed(evt);
+            }
+        });
+
+        btnkelas.setText("Data Kelas");
+        btnkelas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnkelasActionPerformed(evt);
+            }
+        });
+
+        btnJurusan.setText("Data Jurusan");
+        btnJurusan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJurusanActionPerformed(evt);
             }
         });
 
@@ -63,16 +97,22 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(244, 244, 244)
-                        .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(131, 131, 131)
-                        .addComponent(btnSiswa)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSiswa)
+                            .addComponent(btnGuru))
                         .addGap(35, 35, 35)
-                        .addComponent(btnPelajaran)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPelajaran)
+                            .addComponent(btnkelas))
                         .addGap(36, 36, 36)
-                        .addComponent(btnJadwal)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnJurusan)
+                            .addComponent(btnJadwal)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(244, 244, 244)
+                        .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(85, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnLogout)
@@ -88,7 +128,12 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(btnSiswa)
                     .addComponent(btnPelajaran)
                     .addComponent(btnJadwal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuru)
+                    .addComponent(btnkelas)
+                    .addComponent(btnJurusan))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(btnLogout)
                 .addGap(50, 50, 50))
         );
@@ -108,6 +153,26 @@ public class Dashboard extends javax.swing.JFrame {
     private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed
         new SiswaForm().setVisible(true);
     }//GEN-LAST:event_btnSiswaActionPerformed
+
+    private void btnGuruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuruActionPerformed
+        new GuruForm().setVisible(true);
+    }//GEN-LAST:event_btnGuruActionPerformed
+
+    private void btnkelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkelasActionPerformed
+        new KelasForm().setVisible(true);
+    }//GEN-LAST:event_btnkelasActionPerformed
+
+    private void btnJurusanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJurusanActionPerformed
+        new JurusanForm().setVisible(true);
+    }//GEN-LAST:event_btnJurusanActionPerformed
+
+    private void btnPelajaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPelajaranActionPerformed
+        new PelajaranForm().setVisible(true);
+    }//GEN-LAST:event_btnPelajaranActionPerformed
+
+    private void btnJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJadwalActionPerformed
+        new PenjadwalanForm().setVisible(true);
+    }//GEN-LAST:event_btnJadwalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,10 +200,13 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuru;
     private javax.swing.JButton btnJadwal;
+    private javax.swing.JButton btnJurusan;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnPelajaran;
     private javax.swing.JButton btnSiswa;
+    private javax.swing.JButton btnkelas;
     private javax.swing.JLabel lblWelcome;
     // End of variables declaration//GEN-END:variables
 }
